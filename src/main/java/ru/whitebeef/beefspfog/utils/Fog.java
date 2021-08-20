@@ -11,112 +11,64 @@ public class Fog {
 
     private static final Random rnd = new Random();
 
-    /**
-     * Мир, в котором находится туман
-     */
     private final World world;
 
-    /**
-     * Порог высоты тумана
-     */
     private final double maxHeight;
-
-    /**
-     * Высота тумана
-     */
     private double height = 0;
 
-    /**
-     * Урон, который туман наносит игрокам
-     */
     private int damage;
 
-    /**
-     * Конструктор
-     */
-    public Fog(World world, double maxHeight, int damage) {
+    private final int dayIdleTimeoutFrom;
+    private final int dayIdleTimeoutTo;
+    private final int nightIdleTimeoutFrom;
+    private final int nightIdleTimeoutTo;
+
+    public Fog(World world, double maxHeight, int damage,
+               int dayIdleTimeoutFrom, int dayIdleTimeoutTo,
+               int nightIdleTimeoutFrom, int nightIdleTimeoutTo) {
         this.world = world;
         this.maxHeight = maxHeight;
         this.damage = damage;
+        this.dayIdleTimeoutFrom = dayIdleTimeoutFrom;
+        this.dayIdleTimeoutTo = dayIdleTimeoutTo;
+        this.nightIdleTimeoutFrom = nightIdleTimeoutFrom;
+        this.nightIdleTimeoutTo = nightIdleTimeoutTo;
     }
 
-    /**
-     * Получить мир, в котором находится этот туман
-     *
-     * @return Мир, в котором находится этот туман
-     */
     public World getWorld() {
         return this.world;
     }
 
-    /**
-     * Получить максимальный порог высоты тумана
-     *
-     * @return Максимальная высота тумана
-     */
     public double getMaxHeight() {
         return this.maxHeight;
     }
 
-    /**
-     * Получить высоту тумана
-     *
-     * @return Высота тумана (в блоках)
-     */
     public double getHeight() {
         return this.height;
     }
 
-    /**
-     * Установить высоту тумана
-     *
-     * @param height Высота тумана (в блоках)
-     * @return Измененный туман
-     */
     public Fog setHeight(double height) {
         this.height = height;
         return this;
     }
 
-    /**
-     * Получить урон тумана
-     *
-     * @return Урон, который туман наносит игрокам в нем
-     */
     public int getDamage() {
         return this.damage;
     }
 
-    /**
-     * Установить урон тумана
-     *
-     * @param damage Урон, который туман будет наносить игрокам в нем
-     * @return Измененный туман
-     */
     public Fog setDamage(int damage) {
         this.damage = damage;
         return this;
     }
 
-    /**
-     * Нанести урон от тумана игроку
-     *
-     * @param player Игрок, урон которому необходимо нанести
-     */
     public Fog damage(Player player) {
         if (player.getEyeLocation().getY() > height) return this;
         if (player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))
             return this;
-        applyEffects(player);
         player.damage(this.damage);
         return this;
     }
 
-    /**
-     * Накинуть на игрока эффекты от тумана
-     *
-     * @param player Игрок, на которого необходимо накинуть эффекты
-     */
     public Fog applyEffects(Player player) {
         if (player.getEyeLocation().getY() > height) return this;
         if (player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))
@@ -126,13 +78,8 @@ public class Fog {
         return this;
     }
 
-    /**
-     * Изменить высоту туманам, в зависимости от времени мира.
-     *
-     * @return Измененный туман
-     */
     public void updateHeight() {
-        long t = Bukkit.getWorlds().get(0).getTime();
+        long t = this.world.getTime();
         double height;
 
         // [5500 - 6500] - туман чисто IDLE-шит на 0ой высоте
@@ -140,24 +87,20 @@ public class Fog {
         // [16500 - 19500] - туман чисто IDLE-шит на 100ой высоте
         // [19500 - 5500] - период спуска тумана
 
-        if (t >= 6500 && t <= 16500)
-            height = (t - 6500d) / (16500d - 6500d) * maxHeight;
-        else if (t >= 19500 || t <= 5500) {
-            if (t <= 5500)
+        if (t >= this.dayIdleTimeoutTo && t <= this.nightIdleTimeoutFrom)
+            height = maxHeight * (t - this.dayIdleTimeoutTo) / (this.nightIdleTimeoutFrom - this.dayIdleTimeoutTo);
+        else if (t >= this.nightIdleTimeoutTo || t <= this.dayIdleTimeoutFrom) {
+            if (t <= this.dayIdleTimeoutFrom)
                 t += 24000;
-            height = (29500d - t) / (29500d - 19500d) * maxHeight;
-        } else if (t < 6500)
+            int offsetTime = 24000 + this.dayIdleTimeoutFrom;
+            height = maxHeight * (offsetTime - t) / (offsetTime - this.nightIdleTimeoutTo);
+        } else if (t < this.dayIdleTimeoutTo)
             height = 0;
         else
             height = maxHeight;
         this.height = height;
     }
 
-    /**
-     * Показ партиклов тумана игроку
-     *
-     * @param player Игрок, которому отправляется партикл
-     */
     public void showParticles(Player player) {
         Location playerLocation = player.getEyeLocation().clone();
         double radius = playerLocation.getY() < height ? 15 : 40 + (player.getEyeLocation().getY() - this.height);
@@ -178,12 +121,6 @@ public class Fog {
             }
     }
 
-    /**
-     * Получение рандомной локации в рамках круга
-     *
-     * @param center центр круга
-     * @param radius радиус круга
-     */
     private Location getRandomLocation(Location center, double radius) {
         double a = rnd.nextDouble() * 2 * Math.PI;
         double r = rnd.nextDouble() * radius;
@@ -192,12 +129,6 @@ public class Fog {
         return new Location(center.getWorld(), x, center.getY(), z);
     }
 
-    /**
-     * Спавн партикла
-     *
-     * @param player   игрок, которому показывается частица
-     * @param location локация, на которой будет показываться частица
-     */
     private void spawnParticle(Player player, Location location) {
         player.spawnParticle(Particle.CLOUD, location, 1, 0, 0, 0, 0.05);
     }
