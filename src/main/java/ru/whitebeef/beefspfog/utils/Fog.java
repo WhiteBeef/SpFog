@@ -1,4 +1,4 @@
-package ru.whitebeef.beefspfog;
+package ru.whitebeef.beefspfog.utils;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -105,7 +105,7 @@ public class Fog {
      */
     public Fog damage(Player player) {
         if (player.getEyeLocation().getY() > height) return this;
-        if (player.getGameMode().equals(GameMode.SPECTATOR))
+        if (player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))
             return this;
         applyEffects(player);
         player.damage(this.damage);
@@ -118,6 +118,9 @@ public class Fog {
      * @param player Игрок, на которого необходимо накинуть эффекты
      */
     public Fog applyEffects(Player player) {
+        if (player.getEyeLocation().getY() > height) return this;
+        if (player.getGameMode().equals(GameMode.SPECTATOR) || player.getGameMode().equals(GameMode.CREATIVE))
+            return this;
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS,
                 40, 2, false, false, false));
         return this;
@@ -197,5 +200,19 @@ public class Fog {
      */
     private void spawnParticle(Player player, Location location) {
         player.spawnParticle(Particle.CLOUD, location, 1, 0, 0, 0, 0.05);
+    }
+
+    @Override
+    public String toString() {
+        return "Fog{" +
+                "world=" + world +
+                ", maxHeight=" + maxHeight +
+                ", height=" + height +
+                ", damage=" + damage +
+                ", dayIdleTimeoutFrom=" + dayIdleTimeoutFrom +
+                ", dayIdleTimeoutTo=" + dayIdleTimeoutTo +
+                ", nightIdleTimeoutFrom=" + nightIdleTimeoutFrom +
+                ", nightIdleTimeoutTo=" + nightIdleTimeoutTo +
+                '}';
     }
 }

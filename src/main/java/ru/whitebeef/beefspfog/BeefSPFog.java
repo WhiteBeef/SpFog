@@ -1,36 +1,25 @@
 package ru.whitebeef.beefspfog;
 
 import io.papermc.paper.text.PaperComponents;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.world.TimeSkipEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.whitebeef.beefspfog.commands.FogCommandExecutor;
+import ru.whitebeef.beefspfog.utils.Fog;
+import ru.whitebeef.beefspfog.utils.PluginSettings;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 public final class BeefSPFog extends JavaPlugin implements Listener {
 
     private HashMap<World, Fog> fogs = new HashMap<>();
-    private static List<String> deathMessages;
+    private PluginSettings pluginSettings;
 
-    // Инициализация сообщений о смерти
-    static {
-        deathMessages = Arrays.asList(
-                "был поглощён туманом",
-                "заплутал в тумане",
-                "растворился в тумане");
-    }
+    private static BeefSPFog instance;
+
 
     @Override
     public void onEnable() {
@@ -73,24 +62,13 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
 
     }
 
-    // Предотвращение скипа ночи
-    @EventHandler
-    public void onNightSkip(TimeSkipEvent event) {
-        if (event.getSkipReason() == TimeSkipEvent.SkipReason.NIGHT_SKIP)
-            event.setCancelled(true);
+    public static BeefSPFog getInstance() {
+        return instance;
     }
 
-    // Вывод кастомных сообщений
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.CUSTOM)
-            event.deathMessage(getDeathMessage(event.getEntity()));
+    public PluginSettings getPluginSettings() {
+        return this.pluginSettings;
     }
 
-    // Получение кастомных сообщений
-    private Component getDeathMessage(Player player) {
-        return PaperComponents.legacySectionSerializer()
-                .deserialize(player.getName() + " " + deathMessages.get(new Random().nextInt(deathMessages.size())));
-    }
 
 }

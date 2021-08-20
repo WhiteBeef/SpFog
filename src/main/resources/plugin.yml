@@ -4,3 +4,12 @@ main: ru.whitebeef.beefspfog.BeefSPFog
 api-version: 1.16
 authors: [ _WhiteBeef_ , Xikki]
 description: SP Fog
+commands:
+  fog:
+    usage: /<command>
+    description: Main fog command
+    permission: fog.admin
+permissions:
+  fog.admin:
+    description: Admin permission for fog plugin
+    default: op

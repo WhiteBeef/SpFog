@@ -1,0 +1,38 @@
+death-messages:
+  - '%player_name% был поглощён туманом'
+  - '%player_name% заплутал в тумане'
+  - '%player_name% растворился в тумане'
+
+
+fog-settings:
+  world:
+    max-height: 100
+    damage: 2
+    idle-timeouts:
+      day:
+        from: 5500
+        to: 6500
+      night:
+        from: 16500
+        to: 19500
+  world_nether:
+    max-height: 80
+    damage: 2
+    idle-timeouts:
+      day:
+        from: 5500
+        to: 6500
+      night:
+        from: 16500
+        to: 19500
+  world_the_end:
+    max-height: 80
+    damage: 2
+    idle-timeouts:
+      day:
+        from: 5500
+        to: 6500
+      night:
+        from: 16500
+        to: 19500
+
