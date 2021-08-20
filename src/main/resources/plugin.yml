@@ -2,5 +2,5 @@ name: BeefSPFog
 version: ${project.version}
 main: ru.whitebeef.beefspfog.BeefSPFog
 api-version: 1.16
-authors: [ _WhiteBeef_ ]
+authors: [ _WhiteBeef_ , Xikki]
 description: SP Fog
