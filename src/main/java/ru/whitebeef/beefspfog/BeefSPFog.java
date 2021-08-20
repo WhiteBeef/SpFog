@@ -24,26 +24,21 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
     private HashMap<World, Fog> fogs = new HashMap<>();
     private static List<String> deathMessages;
 
-
     // Инициализация сообщений о смерти
     static {
-        String[] messagesArray = {
-                "задохнулся в тумане",
+        deathMessages = Arrays.asList(
                 "был поглощён туманом",
                 "заплутал в тумане",
-                "растворился в тумане"
-        };
-        deathMessages = Arrays.asList(messagesArray);
+                "растворился в тумане");
     }
 
     @Override
     public void onEnable() {
-
         Bukkit.getPluginManager().registerEvents(this, this);
 
-        // Гернерация фога для миров
+        // Гернерация тумана для миров
         Fog overworldFog = new Fog(Bukkit.getWorlds().get(0), 100, 3);
-        Fog netherFog = new Fog(Bukkit.getWorlds().get(1), 64, 3);
+        Fog netherFog = new Fog(Bukkit.getWorlds().get(1), 80, 3);
         Fog endFog = new Fog(Bukkit.getWorlds().get(2), 80, 3);
 
         fogs.put(overworldFog.getWorld(), overworldFog);
@@ -62,7 +57,7 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
             Bukkit.getOnlinePlayers().forEach(player -> fogs.get(player.getWorld()).damage(player));
         }, 0l, 20l);
 
-        // Показ
+        // Показ высоты тумана
         Bukkit.getScheduler().runTaskTimer(this, () -> {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if (player.getInventory().getItemInOffHand().getType() == Material.CLOCK ||
@@ -85,19 +80,17 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
             event.setCancelled(true);
     }
 
+    // Вывод кастомных сообщений
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (event.getEntity().getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.CUSTOM)
             event.deathMessage(getDeathMessage(event.getEntity()));
     }
 
+    // Получение кастомных сообщений
     private Component getDeathMessage(Player player) {
         return PaperComponents.legacySectionSerializer()
                 .deserialize(player.getName() + " " + deathMessages.get(new Random().nextInt(deathMessages.size())));
     }
 
-    @Override
-    public void onDisable() {
-
-    }
 }
