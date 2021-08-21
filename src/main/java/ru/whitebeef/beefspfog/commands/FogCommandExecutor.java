@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.whitebeef.beefspfog.BeefSPFog;
+import ru.whitebeef.beefspfog.utils.FogPresets;
+import ru.whitebeef.beefspfog.utils.FogPresetsUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +19,8 @@ public class FogCommandExecutor implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Неизвестный формат команды");
+        if (args.length == 0) {
+            BeefSPFog.getInstance().getPluginSettings().sendPresetsMessage(sender);
             return true;
         }
         if (args[0].equalsIgnoreCase("reload")) {

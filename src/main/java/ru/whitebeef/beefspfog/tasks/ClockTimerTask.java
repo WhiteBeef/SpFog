@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.utils.Fog;
+import ru.whitebeef.beefspfog.utils.FogPresets;
 
 public class ClockTimerTask extends BukkitRunnable {
 

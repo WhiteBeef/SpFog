@@ -24,11 +24,13 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
         this.pluginSettings.loadListeners();
         this.pluginSettings.loadTasks();
         this.pluginSettings.loadCommands();
+        this.pluginSettings.loadPlayers();
     }
 
     @Override
     public void onDisable() {
         this.pluginSettings.unloadTasks();
+        this.pluginSettings.unloadPlayers();
     }
 
     public static BeefSPFog getInstance() {

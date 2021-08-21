@@ -3,6 +3,9 @@ death-messages:
   - '%player_name% заплутал в тумане'
   - '%player_name% растворился в тумане'
 
+presets-message: |-
+  &8[&7СПт&8] &fДобро пожаловать на &7#СП-Туман&f.
+  &fПеред тем, как Вы приступите к игре, Вы можете изменить настройки отображения частиц тумана под Ваш ПК:
 clock-message: '&7Таймер : %min_range% - %max_range%'
 fog-settings:
   world:
@@ -36,3 +39,20 @@ fog-settings:
         from: 16500
         to: 19500
 
+fog-particles-presets:
+  default-preset: medium
+  low:
+    name: '&aМало'
+    hover: 'Для слабых ПК'
+    upper-layer: 25
+    bottom-layers: 5
+  medium:
+    name: '&eСредне'
+    hover: 'Для средних и мощных ПК'
+    upper-layer: 50
+    bottom-layers: 10
+  high:
+    name: '&cМного'
+    hover: 'Для мощных ПК'
+    upper-layer: 100
+    bottom-layers: 20

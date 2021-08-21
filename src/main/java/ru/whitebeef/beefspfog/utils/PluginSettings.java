@@ -1,17 +1,25 @@
 package ru.whitebeef.beefspfog.utils;
 
+import io.papermc.paper.text.PaperComponents;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.commands.FogCommandExecutor;
 import ru.whitebeef.beefspfog.listeners.NightSkipListener;
 import ru.whitebeef.beefspfog.listeners.PlayerDeathListener;
+import ru.whitebeef.beefspfog.listeners.PlayerJoinListener;
+import ru.whitebeef.beefspfog.listeners.PlayerQuitListener;
 import ru.whitebeef.beefspfog.tasks.ClockTimerTask;
 import ru.whitebeef.beefspfog.tasks.FogDamageTask;
 import ru.whitebeef.beefspfog.tasks.FogParticlesTask;
@@ -23,8 +31,11 @@ import java.util.*;
 public class PluginSettings {
 
     private Map<World, Fog> fogs = new HashMap<>();
+    private Map<String, FogPresets> presets = new LinkedHashMap<>();
     private List<String> deathMessages = new ArrayList<>();
+    private String defaultPreset;
     private String clockMessage;
+    private String presetsMessage;
 
     private FogDamageTask damageTask;
     private FogParticlesTask particlesTask;
@@ -35,6 +46,7 @@ public class PluginSettings {
 
         this.fogs.clear();
         this.deathMessages.clear();
+        this.presets.clear();
 
         JavaPlugin plugin = BeefSPFog.getInstance();
         if (!plugin.getDataFolder().exists()) {
@@ -83,7 +95,12 @@ public class PluginSettings {
         }
         // Загрузка сообщений о смерти
         this.deathMessages.addAll(config.getStringList("death-messages"));
+
+        // Загрузка сообщения на часах
         this.clockMessage = ChatColor.translateAlternateColorCodes('&', config.getString("clock-message"));
+        this.presetsMessage = ChatColor.translateAlternateColorCodes('&', config.getString("presets-message"));
+
+        this.defaultPreset = config.getString("fog-particles-presets.default-preset");
     }
 
     public void loadListeners() {
@@ -92,6 +109,8 @@ public class PluginSettings {
 
         manager.registerEvents(new NightSkipListener(), plugin);
         manager.registerEvents(new PlayerDeathListener(), plugin);
+        manager.registerEvents(new PlayerJoinListener(), plugin);
+        manager.registerEvents(new PlayerQuitListener(), plugin);
     }
 
     public void loadCommands() {
@@ -110,7 +129,15 @@ public class PluginSettings {
         this.damageTask.runTaskTimer(plugin, 0, 20);
         this.particlesTask.runTaskTimerAsynchronously(plugin, 0, 5);
         this.updateTask.runTaskTimerAsynchronously(plugin, 0, 5);
-        this.clockTask.runTaskTimerAsynchronously(plugin, 0, 20);
+        this.clockTask.runTaskTimerAsynchronously(plugin, 0, 10);
+    }
+
+    public void loadPlayers() {
+        Bukkit.getOnlinePlayers().forEach(FogPresets::loadPlayerPreset);
+    }
+
+    public void unloadPlayers() {
+        Bukkit.getOnlinePlayers().forEach(FogPresets::unloadPlayerPreset);
     }
 
     public void unloadTasks() {
@@ -137,9 +164,28 @@ public class PluginSettings {
         return clockMessage;
     }
 
+    public String getDefaultPreset() {
+        return this.defaultPreset;
+    }
+
     public Fog getFog(World world) {
         return this.fogs.get(world);
     }
 
+    public FogPresets getFogPresetsByName(String name) {
+        return this.presets.get(name);
+    }
+
+    public void sendPresetsMessage(CommandSender sender) {
+        sender.sendMessage(PaperComponents.legacySectionSerializer().deserialize(this.presetsMessage));
+        for (String id : this.presets.keySet()) {
+            FogPresets preset = this.presets.get(id);
+            Component message = PaperComponents.legacySectionSerializer()
+                    .deserialize(ChatColor.WHITE + " - " + preset.getName());
+            message = message.hoverEvent(HoverEvent.showText(Component.text(preset.getHover())))
+                    .clickEvent(ClickEvent.runCommand("/fog presets " + id));
+            sender.sendMessage(message);
+        }
+    }
 
 }
