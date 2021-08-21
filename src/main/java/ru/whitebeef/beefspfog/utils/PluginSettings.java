@@ -1,6 +1,7 @@
 package ru.whitebeef.beefspfog.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,6 +24,7 @@ public class PluginSettings {
 
     private Map<World, Fog> fogs = new HashMap<>();
     private List<String> deathMessages = new ArrayList<>();
+    private String clockMessage;
 
     private FogDamageTask damageTask;
     private FogParticlesTask particlesTask;
@@ -68,7 +70,7 @@ public class PluginSettings {
         }
 
         this.deathMessages.addAll(config.getStringList("death-messages"));
-
+        this.clockMessage = ChatColor.translateAlternateColorCodes('&', config.getString("clock-message"));
     }
 
     public void loadListeners() {
@@ -116,6 +118,10 @@ public class PluginSettings {
 
     public String getDeathMessageRandomly() {
         return this.deathMessages.get(new Random().nextInt(this.deathMessages.size()));
+    }
+
+    public String getClockMessage() {
+        return clockMessage;
     }
 
     public Fog getFog(World world) {

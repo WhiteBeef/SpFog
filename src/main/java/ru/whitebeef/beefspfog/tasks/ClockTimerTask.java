@@ -17,9 +17,11 @@ public class ClockTimerTask extends BukkitRunnable {
                 Fog fog = BeefSPFog.getInstance().getPluginSettings().getFog(player.getWorld());
                 if (fog == null) return;
                 int avgFogHeight = (int) (fog.getHeight() / 10) * 10;
+                String message = BeefSPFog.getInstance().getPluginSettings().getClockMessage();
+                message = message.replace("%min_rage%", String.valueOf(avgFogHeight))
+                        .replace("%max_rage%", String.valueOf(avgFogHeight + 10));
                 player.sendActionBar(PaperComponents.legacySectionSerializer()
-                        .deserialize(ChatColor.translateAlternateColorCodes('&',
-                                "&7Туман : " + avgFogHeight + " - " + (avgFogHeight + 10))));
+                        .deserialize(message));
             }
         });
     }
