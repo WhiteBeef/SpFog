@@ -49,6 +49,7 @@ public class PluginSettings {
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
+        // Загрузка туманов для миров
         for (String worldName : config.getConfigurationSection("fog-settings").getKeys(false)) {
             World world = Bukkit.getWorld(worldName);
             if (world == null) {
@@ -69,6 +70,18 @@ public class PluginSettings {
                     nightIdleTimeoutFrom, nightIdleTimeoutTo));
         }
 
+        // Загрузка пресетов для партиклов
+        ConfigurationSection presetsSection = config.getConfigurationSection("fog-particles-presets");
+        for (String presetName : presetsSection.getKeys(false)) {
+            if (presetName.equals("default-preset"))
+                continue;
+            this.presets.put(presetName, new FogPresets(
+                    ChatColor.translateAlternateColorCodes('&', presetsSection.getString(presetName + ".name")),
+                    presetsSection.getString(presetName + ".hover"),
+                    presetsSection.getInt(presetName + ".upper-layer"),
+                    presetsSection.getInt(presetName + ".bottom-layers")));
+        }
+        // Загрузка сообщений о смерти
         this.deathMessages.addAll(config.getStringList("death-messages"));
         this.clockMessage = ChatColor.translateAlternateColorCodes('&', config.getString("clock-message"));
     }

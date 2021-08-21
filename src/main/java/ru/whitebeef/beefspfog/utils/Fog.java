@@ -108,8 +108,8 @@ public class Fog {
             player.spawnParticle(Particle.CLOUD, player.getEyeLocation(), 25, 5, 5, 5, 0.1);
         } else
             for (int y = (int) height; y > height - 20 && y > 0; y -= 3) {
-                for (int i = 0; i < (y == height ? 50 : 10); i++) {
-                    for (int k = 0; k < 10; k++) {
+                for (int i = 0; i < (y == height ? preset.getUpperLayer() : preset.getBottomLayers()); i++) {
+                    for (int attempt = 0; attempt < 10; attempt++) {
                         Location location = getRandomLocation(playerLocation, radius);
                         location.setY(y);
                         if (!location.getBlock().getType().isSolid()) {

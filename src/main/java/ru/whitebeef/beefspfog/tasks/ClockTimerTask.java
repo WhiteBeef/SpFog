@@ -18,8 +18,8 @@ public class ClockTimerTask extends BukkitRunnable {
                 if (fog == null) return;
                 int avgFogHeight = (int) (fog.getHeight() / 10) * 10;
                 String message = BeefSPFog.getInstance().getPluginSettings().getClockMessage();
-                message = message.replace("%min_rage%", String.valueOf(avgFogHeight))
-                        .replace("%max_rage%", String.valueOf(avgFogHeight + 10));
+                message = message.replace("%min_range%", String.valueOf(avgFogHeight))
+                        .replace("%max_range%", String.valueOf(avgFogHeight + 10));
                 player.sendActionBar(PaperComponents.legacySectionSerializer()
                         .deserialize(message));
             }
