@@ -1,13 +1,8 @@
 package ru.whitebeef.beefspfog;
 
-import io.papermc.paper.text.PaperComponents;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.whitebeef.beefspfog.commands.FogCommandExecutor;
 import ru.whitebeef.beefspfog.utils.Fog;
 import ru.whitebeef.beefspfog.utils.PluginSettings;
 

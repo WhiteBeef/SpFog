@@ -3,7 +3,7 @@ death-messages:
   - '%player_name% заплутал в тумане'
   - '%player_name% растворился в тумане'
 
-
+clock-message: '&7Таймер : %min_range% - %max_range%'
 fog-settings:
   world:
     max-height: 100

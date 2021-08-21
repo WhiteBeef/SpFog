@@ -7,21 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import ru.whitebeef.beefspfog.BeefSPFog;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class PlayerDeathListener implements Listener {
-    private static List<String> deathMessages;
-
-    // Инициализация сообщений о смерти
-    static {
-        deathMessages = Arrays.asList(
-                "был поглощён туманом",
-                "заплутал в тумане",
-                "растворился в тумане");
-    }
 
     // Вывод кастомных сообщений
     @EventHandler

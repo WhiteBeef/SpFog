@@ -1,5 +1,5 @@
 name: BeefSPFog
-version: 1.2.0
+version: 1.2.1
 main: ru.whitebeef.beefspfog.BeefSPFog
 api-version: 1.16
 authors: [ _WhiteBeef_ , Xikki]

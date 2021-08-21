@@ -6,6 +6,7 @@ import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.utils.Fog;
 
 public class FogParticlesTask extends BukkitRunnable {
+
     @Override
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {

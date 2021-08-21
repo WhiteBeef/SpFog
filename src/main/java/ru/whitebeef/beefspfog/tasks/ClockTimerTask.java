@@ -1,7 +1,6 @@
 package ru.whitebeef.beefspfog.tasks;
 
 import io.papermc.paper.text.PaperComponents;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,6 +8,7 @@ import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.utils.Fog;
 
 public class ClockTimerTask extends BukkitRunnable {
+
     @Override
     public void run() {
         Bukkit.getOnlinePlayers().forEach((player) -> {
