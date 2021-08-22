@@ -18,9 +18,12 @@ public class ClockTimerTask extends BukkitRunnable {
                 Fog fog = BeefSPFog.getInstance().getPluginSettings().getFog(player.getWorld());
                 if (fog == null) return;
                 int avgFogHeight = (int) (fog.getHeight() / 10) * 10;
+                double dY = player.getEyeLocation().getY() - fog.getHeight();
                 String message = BeefSPFog.getInstance().getPluginSettings().getClockMessage();
                 message = message.replace("%min_range%", String.valueOf(avgFogHeight))
-                        .replace("%max_range%", String.valueOf(avgFogHeight + 10));
+                        .replace("%max_range%", String.valueOf(avgFogHeight + 10))
+                        .replace("%gradient_color%",
+                                BeefSPFog.getInstance().getPluginSettings().getGradient().getColor(dY) + "");
                 player.sendActionBar(PaperComponents.legacySectionSerializer()
                         .deserialize(message));
             }

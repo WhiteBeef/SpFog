@@ -135,7 +135,7 @@ public class PluginSettings {
         this.damageTask.runTaskTimer(plugin, 0, 20);
         this.particlesTask.runTaskTimerAsynchronously(plugin, 0, 5);
         this.updateTask.runTaskTimerAsynchronously(plugin, 0, 5);
-        this.clockTask.runTaskTimerAsynchronously(plugin, 0, 10);
+        this.clockTask.runTaskTimerAsynchronously(plugin, 0, 5);
     }
 
     public void loadPlayers() {
