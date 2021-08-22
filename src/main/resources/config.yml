@@ -6,7 +6,7 @@ death-messages:
 presets-message: |-
   &8[&7СПт&8] &fДобро пожаловать на &7#СП-Туман&f.
   &fПеред тем, как Вы приступите к игре, Вы можете изменить настройки отображения частиц тумана под Ваш ПК:
-clock-message: '&7Таймер : %min_range% - %max_range%'
+clock-message: '&7Таймер : %gradient_color%%min_range% &7- %gradient_color%%max_range%'
 fog-settings:
   world:
     max-height: 100
@@ -56,3 +56,9 @@ fog-particles-presets:
     hover: 'Для мощных ПК'
     upper-layer: 100
     bottom-layers: 20
+
+gradient-settings:
+  max-dy: 80
+  color-near: '#ff0000'
+  color-medium: '#ffff00'
+  color-far: '#00ff00'

@@ -103,6 +103,7 @@ public class Fog {
 
     public void showParticles(Player player) {
         FogPresets preset = FogPresets.getPlayerPreset(player);
+        if (preset == null) return;
         Location playerLocation = player.getEyeLocation().clone();
         double radius = playerLocation.getY() < height ? 15 : 40 + (player.getEyeLocation().getY() - this.height);
         if (playerLocation.getY() < height) {

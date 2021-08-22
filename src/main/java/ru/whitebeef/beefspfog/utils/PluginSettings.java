@@ -4,8 +4,8 @@ import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,10 +16,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.commands.FogCommandExecutor;
-import ru.whitebeef.beefspfog.listeners.NightSkipListener;
-import ru.whitebeef.beefspfog.listeners.PlayerDeathListener;
-import ru.whitebeef.beefspfog.listeners.PlayerJoinListener;
-import ru.whitebeef.beefspfog.listeners.PlayerQuitListener;
+import ru.whitebeef.beefspfog.listeners.*;
 import ru.whitebeef.beefspfog.tasks.ClockTimerTask;
 import ru.whitebeef.beefspfog.tasks.FogDamageTask;
 import ru.whitebeef.beefspfog.tasks.FogParticlesTask;
@@ -41,6 +38,7 @@ public class PluginSettings {
     private FogParticlesTask particlesTask;
     private FogUpdateTask updateTask;
     private ClockTimerTask clockTask;
+    private LinearGradient gradient;
 
     public void reloadSettings() {
 
@@ -93,14 +91,22 @@ public class PluginSettings {
                     presetsSection.getInt(presetName + ".upper-layer"),
                     presetsSection.getInt(presetName + ".bottom-layers")));
         }
+        this.defaultPreset = config.getString("fog-particles-presets.default-preset");
+        this.presetsMessage = ChatColor.translateAlternateColorCodes('&', config.getString("presets-message"));
+
         // Загрузка сообщений о смерти
         this.deathMessages.addAll(config.getStringList("death-messages"));
 
         // Загрузка сообщения на часах
         this.clockMessage = ChatColor.translateAlternateColorCodes('&', config.getString("clock-message"));
-        this.presetsMessage = ChatColor.translateAlternateColorCodes('&', config.getString("presets-message"));
 
-        this.defaultPreset = config.getString("fog-particles-presets.default-preset");
+        // Загрузка градиента для часов
+        ConfigurationSection gradientSection = config.getConfigurationSection("gradient-settings");
+        this.gradient = new LinearGradient(ChatColor.of(gradientSection.getString("color-near")),
+                ChatColor.of(gradientSection.getString("color-medium")),
+                ChatColor.of(gradientSection.getString("color-far")),
+                gradientSection.getInt("max-dy"));
+
     }
 
     public void loadListeners() {
@@ -158,6 +164,10 @@ public class PluginSettings {
 
     public String getDeathMessageRandomly() {
         return this.deathMessages.get(new Random().nextInt(this.deathMessages.size()));
+    }
+
+    public LinearGradient getGradient() {
+        return gradient;
     }
 
     public String getClockMessage() {

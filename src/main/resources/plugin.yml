@@ -8,8 +8,3 @@ commands:
   fog:
     usage: /<command>
     description: Main fog command
-    permission: fog.admin
-permissions:
-  fog.admin:
-    description: Admin permission for fog plugin
-    default: op

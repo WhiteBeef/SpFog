@@ -23,7 +23,7 @@ public class FogCommandExecutor implements TabExecutor {
             BeefSPFog.getInstance().getPluginSettings().sendPresetsMessage(sender);
             return true;
         }
-        if (args[0].equalsIgnoreCase("reload")) {
+        if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("fog.admin")) {
             BeefSPFog.getInstance().getPluginSettings().reloadSettings();
             sender.sendMessage(ChatColor.GREEN + "Конфигурация перезагружена");
             return true;
