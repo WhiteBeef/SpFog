@@ -48,6 +48,10 @@ public class FogPresets {
 
     public static void loadPlayerPreset(Player player) {
         FogPresets preset = FogPresetsUtil.getPreset(player);
+        if (preset == null) {
+            FogPresetsUtil.resetPreset(player);
+            preset = FogPresetsUtil.getPreset(player);
+        }
         FogPresets.setPlayerPreset(player, preset);
     }
 
