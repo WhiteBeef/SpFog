@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Fog {
@@ -34,6 +35,8 @@ public class Fog {
         this.nightIdleTimeoutFrom = nightIdleTimeoutFrom;
         this.nightIdleTimeoutTo = nightIdleTimeoutTo;
     }
+
+
 
     public World getWorld() {
         return this.world;
@@ -148,4 +151,5 @@ public class Fog {
                 ", nightIdleTimeoutTo=" + nightIdleTimeoutTo +
                 '}';
     }
+
 }

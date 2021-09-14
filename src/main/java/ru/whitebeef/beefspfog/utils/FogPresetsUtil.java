@@ -8,7 +8,7 @@ import ru.whitebeef.beefspfog.BeefSPFog;
 
 public class FogPresetsUtil {
 
-    private static NamespacedKey presetKey = new NamespacedKey(BeefSPFog.getInstance(), "fog_preset");
+    private static final NamespacedKey presetKey = new NamespacedKey(BeefSPFog.getInstance(), "fog_preset");
 
     public static FogPresets getPreset(Player player) {
         PersistentDataContainer container = player.getPersistentDataContainer();
@@ -26,7 +26,6 @@ public class FogPresetsUtil {
     }
 
     public static void resetPreset(Player player) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
         FogPresetsUtil.setPreset(player, BeefSPFog.getInstance().getPluginSettings().getDefaultPreset());
     }
 

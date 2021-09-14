@@ -11,12 +11,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.whitebeef.beefspfog.BeefSPFog;
 import ru.whitebeef.beefspfog.commands.FogCommandExecutor;
-import ru.whitebeef.beefspfog.listeners.*;
+import ru.whitebeef.beefspfog.listeners.NightSkipListener;
+import ru.whitebeef.beefspfog.listeners.PlayerDeathListener;
+import ru.whitebeef.beefspfog.listeners.PlayerJoinListener;
+import ru.whitebeef.beefspfog.listeners.PlayerQuitListener;
 import ru.whitebeef.beefspfog.tasks.ClockTimerTask;
 import ru.whitebeef.beefspfog.tasks.FogDamageTask;
 import ru.whitebeef.beefspfog.tasks.FogParticlesTask;
@@ -27,9 +29,9 @@ import java.util.*;
 
 public class PluginSettings {
 
-    private Map<World, Fog> fogs = new HashMap<>();
-    private Map<String, FogPresets> presets = new LinkedHashMap<>();
-    private List<String> deathMessages = new ArrayList<>();
+    private final Map<World, Fog> fogs = new HashMap<>();
+    private final Map<String, FogPresets> presets = new LinkedHashMap<>();
+    private final List<String> deathMessages = new ArrayList<>();
     private String defaultPreset;
     private String clockMessage;
     private String presetsMessage;
@@ -149,7 +151,7 @@ public class PluginSettings {
     public void unloadTasks() {
         if (this.damageTask != null)
             this.damageTask.cancel();
-        if (this.particlesTask != null)
+        if (this.particlesTask !=  null)
             this.particlesTask.cancel();
         if (this.updateTask != null)
             this.updateTask.cancel();

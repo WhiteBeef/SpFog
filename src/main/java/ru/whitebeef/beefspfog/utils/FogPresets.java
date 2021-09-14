@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class FogPresets {
 
-    private static Map<UUID, FogPresets> playerPresets = new HashMap<>();
+    private static final Map<UUID, FogPresets> playerPresets = new HashMap<>();
 
     private final String name;
     private final String hover;

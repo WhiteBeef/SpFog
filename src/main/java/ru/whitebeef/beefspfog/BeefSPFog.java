@@ -1,16 +1,11 @@
 package ru.whitebeef.beefspfog;
 
-import org.bukkit.World;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.whitebeef.beefspfog.utils.Fog;
 import ru.whitebeef.beefspfog.utils.PluginSettings;
-
-import java.util.HashMap;
 
 public final class BeefSPFog extends JavaPlugin implements Listener {
 
-    private HashMap<World, Fog> fogs = new HashMap<>();
     private PluginSettings pluginSettings;
 
     private static BeefSPFog instance;
